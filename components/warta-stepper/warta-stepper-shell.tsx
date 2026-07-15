@@ -21,6 +21,7 @@ import Step1JadwalPelayan from './step-1-jadwal-pelayan'
 import Step2Kehadiran from './step-2-kehadiran'
 import Step3Partonggoan from './step-3-partonggoan'
 import Step4Pengumuman from './step-4-pengumuman'
+import Step5Preview from './step-5-preview'
 
 // ============================================================
 // REDUCER TYPES & DEFINITIONS
@@ -271,9 +272,8 @@ export default function WartaStepperShell({ initialState, edisiId }: WartaSteppe
           </div>
         )}
         {state.currentStep === 5 && (
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Langkah 5: Preview & Simpan</h2>
-            <p className="text-slate-600 mb-8">Placeholder untuk preview keseluruhan warta.</p>
+          <div className="animate-in fade-in duration-300">
+            <Step5Preview state={state} dispatch={dispatch} />
           </div>
         )}
       </div>
