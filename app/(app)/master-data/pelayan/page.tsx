@@ -1,20 +1,28 @@
-import { User } from 'lucide-react'
+import { Suspense } from 'react'
+import { User, Loader2 } from 'lucide-react'
 import { listPelayan } from '@/app/actions/pelayan'
 import PelayanTable from '@/components/master-data/pelayan-table'
 import MasterDataSearch from '@/components/master-data/master-data-search'
 import CreatePelayanButton from '@/components/master-data/create-pelayan-button'
 
-export default async function PelayanPage(props: {
+// Semua proses async (await) dipindahkan ke sini, bukan di Page
+async function PelayanTableWrapper({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }> | undefined
+}) {
+  const params = await searchParams
+  const q = typeof params?.q === 'string' ? params.q : undefined
+  const data = await listPelayan(q)
+  return <PelayanTable data={data} />
+}
+
+// Komponen Page TIDAK async — return layout statis + Suspense saja
+export default function PelayanPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const searchParams = await props.searchParams
-  const q = typeof searchParams?.q === 'string' ? searchParams.q : undefined
-
-  // Ambil data server-side
-  const data = await listPelayan(q)
-
   return (
-    <div className="flex flex-col gap-6 p-6 md:p-8 max-w-6xl mx-auto w-full">
+    <div className="flex flex-col gap-6 p-6 md:p-8 w-full">
       {/* Header & Aksi Utama */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-6 border-2 border-slate-200 rounded-xl shadow-sm">
         <div className="flex items-center gap-4">
@@ -37,8 +45,14 @@ export default async function PelayanPage(props: {
         <MasterDataSearch placeholder="Cari nama pelayan gereja..." />
       </div>
 
-      {/* Tabel Data */}
-      <PelayanTable data={data} />
+      {/* Tabel Data (Streaming — tidak memblokir transisi halaman) */}
+      <Suspense fallback={
+        <div className="flex justify-center p-8 bg-white border-2 border-slate-300 rounded-xl shadow-sm">
+          <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+        </div>
+      }>
+        <PelayanTableWrapper searchParams={props.searchParams} />
+      </Suspense>
     </div>
   )
 }

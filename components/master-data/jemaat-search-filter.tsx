@@ -23,8 +23,8 @@ export default function JemaatSearchFilter() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 w-full">
-      <div className="flex-grow">
+    <div className="flex flex-col md:flex-row gap-4 items-center w-full">
+      <div className="flex-grow w-full">
         <SearchBarLarge
           placeholder="Cari nama keluarga..."
           defaultValue={defaultQuery}
@@ -35,7 +35,7 @@ export default function JemaatSearchFilter() {
         <select
           value={currentSektor}
           onChange={(e) => updateParams('sektor', e.target.value)}
-          className="w-full h-12 text-lg border-2 border-slate-400 focus:border-slate-700 rounded-lg px-4 bg-white text-slate-900 outline-none transition-colors duration-150"
+          className="w-full h-12 text-lg border-2 border-slate-400 focus:border-slate-700 rounded-md px-4 bg-white text-slate-900 outline-none transition-colors duration-150"
         >
           <option value="">Semua Sektor</option>
           {SEKTOR_LIST.map((s) => (

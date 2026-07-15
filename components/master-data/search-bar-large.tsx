@@ -17,6 +17,12 @@ export default function SearchBarLarge({
   const [value, setValue] = useState(defaultValue)
   const isFirstRender = useRef(true)
 
+  const onSearchRef = useRef(onSearch)
+
+  useEffect(() => {
+    onSearchRef.current = onSearch
+  }, [onSearch])
+
   useEffect(() => {
     // Kita abaikan render pertama agar tidak memicu onSearch saat komponen baru dimuat
     if (isFirstRender.current) {
@@ -26,12 +32,12 @@ export default function SearchBarLarge({
 
     // Set debounce timer
     const timeout = setTimeout(() => {
-      onSearch(value)
+      onSearchRef.current(value)
     }, 300)
 
     // Bersihkan timer jika value berubah sebelum 300ms
     return () => clearTimeout(timeout)
-  }, [value, onSearch])
+  }, [value])
 
   return (
     <div className="relative w-full">

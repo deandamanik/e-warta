@@ -9,13 +9,13 @@ export default function CreateJemaatButton() {
     <JemaatFormModal
       mode="create"
       trigger={
-        <motion.button
+        <motion.div
           whileTap={{ scale: 0.97 }}
-          className="flex items-center justify-center gap-2 py-3 px-6 text-base font-semibold bg-[#185735] text-white rounded-xl shadow-sm hover:shadow-md hover:bg-[#0f3d24] transition-all duration-150 border-2 border-transparent"
+          className="flex items-center justify-center gap-2 py-3 px-6 text-base font-semibold bg-[#185735] text-white rounded-xl shadow-sm hover:shadow-md hover:bg-[#0f3d24] transition-all duration-150 border-2 border-transparent cursor-pointer"
         >
           <UserPlus className="w-5 h-5 shrink-0" />
           Tambah Keluarga Baru
-        </motion.button>
+        </motion.div>
       }
     />
   )

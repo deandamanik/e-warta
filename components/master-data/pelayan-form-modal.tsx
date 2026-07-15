@@ -96,7 +96,7 @@ export default function PelayanFormModal({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogTrigger>{trigger}</DialogTrigger>
 
       <DialogContent className="sm:max-w-[500px] p-6">
         <DialogHeader className="mb-4">

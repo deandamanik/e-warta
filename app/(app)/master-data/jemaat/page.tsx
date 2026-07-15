@@ -1,21 +1,29 @@
-import { Users } from 'lucide-react'
+import { Suspense } from 'react'
+import { Users, Loader2 } from 'lucide-react'
 import { listJemaat } from '@/app/actions/jemaat'
 import JemaatTable from '@/components/master-data/jemaat-table'
 import JemaatSearchFilter from '@/components/master-data/jemaat-search-filter'
 import CreateJemaatButton from '@/components/master-data/create-jemaat-button'
 
-export default async function JemaatPage(props: {
+// Semua proses async (await) dipindahkan ke sini, bukan di Page
+async function JemaatTableWrapper({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }> | undefined
+}) {
+  const params = await searchParams
+  const q = typeof params?.q === 'string' ? params.q : undefined
+  const sektor = typeof params?.sektor === 'string' ? params.sektor : undefined
+  const data = await listJemaat(q, sektor)
+  return <JemaatTable data={data} />
+}
+
+// Komponen Page TIDAK async — return layout statis + Suspense saja
+export default function JemaatPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const searchParams = await props.searchParams
-  const q = typeof searchParams?.q === 'string' ? searchParams.q : undefined
-  const sektor = typeof searchParams?.sektor === 'string' ? searchParams.sektor : undefined
-
-  // Ambil data server-side
-  const data = await listJemaat(q, sektor)
-
   return (
-    <div className="flex flex-col gap-6 p-6 md:p-8 max-w-6xl mx-auto w-full">
+    <div className="flex flex-col gap-6 p-6 md:p-8 w-full">
       {/* Header & Aksi Utama */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-6 border-2 border-slate-200 rounded-xl shadow-sm">
         <div className="flex items-center gap-4">
@@ -38,8 +46,14 @@ export default async function JemaatPage(props: {
         <JemaatSearchFilter />
       </div>
 
-      {/* Tabel Data */}
-      <JemaatTable data={data} />
+      {/* Tabel Data (Streaming — tidak memblokir transisi halaman) */}
+      <Suspense fallback={
+        <div className="flex justify-center p-8 bg-white border-2 border-slate-300 rounded-xl shadow-sm">
+          <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+        </div>
+      }>
+        <JemaatTableWrapper searchParams={props.searchParams} />
+      </Suspense>
     </div>
   )
 }

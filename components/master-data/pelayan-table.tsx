@@ -60,11 +60,11 @@ export default function PelayanTable({ data }: PelayanTableProps) {
         <Table>
           <TableHeader className="bg-slate-100">
             <TableRow className="border-b-2 border-slate-300">
-              <TableHead className="w-16 text-center font-bold text-slate-800 text-base">No.</TableHead>
-              <TableHead className="font-bold text-slate-800 text-base">Nama Pelayan</TableHead>
-              <TableHead className="font-bold text-slate-800 text-base">Gelar</TableHead>
-              <TableHead className="font-bold text-slate-800 text-base">Status</TableHead>
-              <TableHead className="text-right font-bold text-slate-800 text-base pr-6">Aksi</TableHead>
+              <TableHead className="w-[60px] text-center font-bold text-slate-800 text-base">No.</TableHead>
+              <TableHead className="w-full font-bold text-slate-800 text-base">Nama Pelayan</TableHead>
+              <TableHead className="w-[150px] font-bold text-slate-800 text-base">Gelar</TableHead>
+              <TableHead className="w-[150px] font-bold text-slate-800 text-base">Status</TableHead>
+              <TableHead className="w-[220px] text-right font-bold text-slate-800 text-base pr-6">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -103,15 +103,15 @@ export default function PelayanTable({ data }: PelayanTableProps) {
                     
                     <TableCell>
                       {isAktif ? (
-                        <Badge className="bg-green-100 text-green-800 hover:bg-green-200 border-2 border-green-300 py-1.5 px-3 text-sm font-semibold">
+                        <span className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-full bg-[#C9F9D3] text-[#185735]">
                           <CheckCircle2 className="w-4 h-4 mr-1.5" />
                           Aktif
-                        </Badge>
+                        </span>
                       ) : (
-                        <Badge className="bg-slate-200 text-slate-600 hover:bg-slate-300 border-2 border-slate-300 py-1.5 px-3 text-sm font-semibold">
+                        <span className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-full bg-slate-200 text-slate-700">
                           <XCircle className="w-4 h-4 mr-1.5" />
                           Nonaktif
-                        </Badge>
+                        </span>
                       )}
                     </TableCell>
                     
@@ -125,39 +125,37 @@ export default function PelayanTable({ data }: PelayanTableProps) {
                             gelar: row.gelar
                           }}
                           trigger={
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="border-2 border-slate-300 text-slate-700 hover:text-[#185735] hover:border-[#185735] h-10 px-3"
+                            <div
+                              className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background hover:bg-accent hover:text-accent-foreground border-2 border-slate-300 text-slate-700 hover:text-[#185735] hover:border-[#185735] h-10 px-3 cursor-pointer"
                               title="Ubah Data"
                             >
                               <Pencil className="w-4 h-4 mr-2" />
-                              <span className="font-semibold text-sm">Ubah</span>
-                            </Button>
+                              <span className="font-semibold text-base">Ubah</span>
+                            </div>
                           }
                         />
                         
                         {isAktif ? (
                           <Button
-                            variant="outline"
+                            variant="destructive"
                             size="sm"
-                            className="border-2 border-red-300 text-red-700 hover:text-red-800 hover:border-red-600 hover:bg-red-50 h-10 px-3"
+                            className="border-2 border-red-300 hover:border-red-600 h-10 px-3"
+                            title="Nonaktifkan"
                             onClick={() => openDeleteModal(row)}
-                            title="Nonaktifkan (Soft Delete)"
                           >
                             <UserX className="w-4 h-4 mr-2" />
-                            <span className="font-semibold text-sm">Nonaktifkan</span>
+                            <span className="font-semibold text-base">Nonaktifkan</span>
                           </Button>
                         ) : (
                           <Button
                             variant="outline"
                             size="sm"
-                            className="border-2 border-green-300 text-green-700 hover:text-green-800 hover:border-green-600 hover:bg-green-50 h-10 px-3"
-                            onClick={() => handleRestore(row.id)}
+                            onClick={() => toggleActivePelayan(row.id, true)}
+                            className="border-2 border-green-300 text-green-700 hover:bg-green-50 hover:text-green-800 hover:border-green-600 h-10 px-3"
                             title="Aktifkan Kembali"
                           >
                             <UserCheck className="w-4 h-4 mr-2" />
-                            <span className="font-semibold text-sm">Aktifkan Kembali</span>
+                            <span className="font-semibold text-base">Aktifkan Kembali</span>
                           </Button>
                         )}
                       </div>
