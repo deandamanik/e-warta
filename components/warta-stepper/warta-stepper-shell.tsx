@@ -20,6 +20,7 @@ import {
 import Step1JadwalPelayan from './step-1-jadwal-pelayan'
 import Step2Kehadiran from './step-2-kehadiran'
 import Step3Partonggoan from './step-3-partonggoan'
+import Step4Pengumuman from './step-4-pengumuman'
 
 // ============================================================
 // REDUCER TYPES & DEFINITIONS
@@ -264,9 +265,9 @@ export default function WartaStepperShell({ initialState, edisiId }: WartaSteppe
           </div>
         )}
         {state.currentStep === 4 && (
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Langkah 4: Pengumuman</h2>
-            <p className="text-slate-600 mb-8">Placeholder untuk form Step 4</p>
+          <div className="animate-in fade-in duration-300">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b-2 border-slate-200 pb-2">Langkah 4: Pengumuman</h2>
+            <Step4Pengumuman state={state} dispatch={dispatch} />
           </div>
         )}
         {state.currentStep === 5 && (
