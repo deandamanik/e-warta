@@ -48,22 +48,18 @@ function NavItem({
   isActive: boolean
 }) {
   return (
-    <motion.div
-      whileHover={{ x: 2 }}
-      transition={{ duration: 0.15 }}
+    <Link
+      href={href}
+      prefetch={true}
+      className={`flex items-center gap-3 py-3 px-4 text-lg font-medium rounded-sm transition-all duration-150 hover:translate-x-0.5 ${
+        isActive
+          ? 'bg-[#C9F9D3] text-[#185735] font-semibold border-l-4 border-[#185735]'
+          : 'text-slate-700 hover:bg-slate-100 border-l-4 border-transparent'
+      }`}
     >
-      <Link
-        href={href}
-        className={`flex items-center gap-3 py-3 px-4 text-lg font-medium rounded-sm transition-colors duration-150 ${
-          isActive
-            ? 'bg-[#C9F9D3] text-[#185735] font-semibold border-l-4 border-[#185735]'
-            : 'text-slate-700 hover:bg-slate-100 border-l-4 border-transparent'
-        }`}
-      >
-        <Icon className="w-5 h-5 shrink-0" />
-        <span>{label}</span>
-      </Link>
-    </motion.div>
+      <Icon className="w-5 h-5 shrink-0" />
+      <span>{label}</span>
+    </Link>
   )
 }
 
@@ -116,20 +112,15 @@ export default function Sidebar() {
           ))}
 
           {/* Buat Warta Baru — form Server Action */}
-          <motion.div
-            whileHover={{ x: 2 }}
-            transition={{ duration: 0.15 }}
-          >
-            <form action={createEdisiBaru}>
-              <button
-                type="submit"
-                className="w-full flex items-center gap-3 py-3 px-4 text-lg font-medium text-slate-700 hover:bg-slate-100 border-l-4 border-transparent transition-colors duration-150 rounded-sm"
-              >
-                <Plus className="w-5 h-5 shrink-0" />
-                <span>Buat Warta Baru</span>
-              </button>
-            </form>
-          </motion.div>
+          <form action={createEdisiBaru}>
+            <button
+              type="submit"
+              className="w-full flex items-center gap-3 py-3 px-4 text-lg font-medium text-slate-700 hover:bg-slate-100 border-l-4 border-transparent transition-all duration-150 hover:translate-x-0.5 rounded-sm"
+            >
+              <Plus className="w-5 h-5 shrink-0" />
+              <span>Buat Warta Baru</span>
+            </button>
+          </form>
         </div>
 
         {/* Grup: MASTER DATA */}
