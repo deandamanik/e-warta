@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Blueprint / dokumen perencanaan
+01-BASE-DASHBOARD.md
+02-MASTER-DATA.md
+03-WARTA-STEPPER.md
+04-TINGTING-FORM.md
+05-PRINT-ENGINE.md
+AGENTS.md
+CLAUDE.md
+
