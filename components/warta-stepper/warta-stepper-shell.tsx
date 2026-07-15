@@ -17,6 +17,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog'
 
+import Step1JadwalPelayan from './step-1-jadwal-pelayan'
+
 // ============================================================
 // REDUCER TYPES & DEFINITIONS
 // ============================================================
@@ -242,10 +244,9 @@ export default function WartaStepperShell({ initialState, edisiId }: WartaSteppe
       {/* Step Render */}
       <div className="bg-white border-2 border-slate-200 rounded-xl shadow-sm p-6 mb-6 min-h-[400px]">
         {state.currentStep === 1 && (
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">Langkah 1: Jadwal & Pelayan</h2>
-            <p className="text-slate-600 mb-8">Placeholder untuk form Step 1</p>
-            {/* TODO: Integrate actual step 1 */}
+          <div className="animate-in fade-in duration-300">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b-2 border-slate-200 pb-2">Langkah 1: Jadwal & Pelayan</h2>
+            <Step1JadwalPelayan state={state} dispatch={dispatch} />
           </div>
         )}
         {state.currentStep === 2 && (
