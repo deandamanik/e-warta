@@ -10,7 +10,7 @@ export default function CreateWartaButton() {
       <motion.button
         type="submit"
         whileTap={{ scale: 0.97 }}
-        className="flex items-center justify-center gap-2 py-4 px-8 text-lg font-semibold bg-[#185735] text-white rounded-lg hover:bg-[#0f3d24] transition-colors duration-150"
+        className="flex items-center justify-center gap-2 py-3 px-6 text-base font-semibold bg-[#185735] text-white rounded-xl shadow-sm hover:shadow-md hover:bg-[#0f3d24] transition-all duration-150"
       >
         <Plus className="w-5 h-5 shrink-0" />
         Buat Warta Baru

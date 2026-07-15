@@ -71,29 +71,36 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-64 shrink-0 bg-white border-r-2 border-slate-200 flex flex-col min-h-screen">
+    <aside className="w-64 shrink-0 bg-white border-r-2 border-slate-200 flex flex-col min-h-screen overflow-hidden">
       {/* Header Sidebar */}
       <div
-        className="flex items-center gap-2 px-4 py-5"
+        className="flex items-center gap-3 p-3.5 border-b border-[#124228] select-none"
         style={{ backgroundColor: '#185735' }}
       >
-        <Image
-          src="/logo-gkps.png"
-          alt="Logo GKPS"
-          width={36}
-          height={36}
-          className="shrink-0"
-        />
-        <span className="text-white font-semibold text-base leading-tight">
-          GKPS &middot; e-WARTA
-        </span>
+        <div className="w-11 h-11 bg-white p-1 rounded-full overflow-hidden shadow-sm flex items-center justify-center shrink-0">
+          <Image
+            src="/logo-gkps.png"
+            alt="Logo GKPS"
+            width={38}
+            height={38}
+            className="shrink-0"
+          />
+        </div>
+        <div className="flex flex-col min-w-0">
+          <span className="text-white font-extrabold text-sm tracking-wide">
+            GKPS
+          </span>
+          <span className="text-emerald-100 text-sm font-normal leading-tight block truncate opacity-90">
+            Pamatang Simalungun
+          </span>
+        </div>
       </div>
 
       {/* Konten Menu */}
-      <nav className="flex-1 flex flex-col py-4 overflow-y-auto">
+      <nav className="flex-1 flex flex-col py-4 overflow-y-auto overflow-x-hidden">
         {/* Grup: MENU UTAMA */}
-        <div className="mb-2">
-          <p className="px-4 py-2 text-sm font-medium uppercase tracking-wider text-slate-500 select-none">
+        <div className="mb-4 flex flex-col gap-1">
+          <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-slate-400 select-none mb-1 block">
             Menu Utama
           </p>
 
@@ -126,8 +133,8 @@ export default function Sidebar() {
         </div>
 
         {/* Grup: MASTER DATA */}
-        <div className="mb-2">
-          <p className="px-4 py-2 text-sm font-medium uppercase tracking-wider text-slate-500 select-none">
+        <div className="mb-4 flex flex-col gap-1">
+          <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-slate-400 select-none mb-1 block">
             Master Data
           </p>
 
