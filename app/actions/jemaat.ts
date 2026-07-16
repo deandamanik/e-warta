@@ -111,3 +111,22 @@ export async function toggleActiveJemaat(id: string, newStatus: boolean) {
 
   revalidatePath('/master-data/jemaat')
 }
+
+/**
+ * Mengambil semua baris jemaat_keluarga yang aktif.
+ */
+export async function listJemaatAktif() {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('jemaat_keluarga')
+    .select('*')
+    .eq('is_active', true)
+    .order('nama_keluarga', { ascending: true })
+
+  if (error) {
+    throw new Error(`Gagal mengambil data jemaat aktif: ${error.message}`)
+  }
+
+  return data ?? []
+}

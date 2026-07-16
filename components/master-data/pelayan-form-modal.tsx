@@ -26,7 +26,8 @@ const GELAR_PRESETS = [
   'St.',
   'C.St.',
   'Sy.',
-  'Guru Huria',
+  'Majelis Sektor',
+  'Seksi',
 ]
 
 export default function PelayanFormModal({

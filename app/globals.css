@@ -128,3 +128,14 @@
     @apply font-sans;
   }
 }
+
+@media print {
+  @page {
+    size: 330mm 210mm;
+    margin: 0;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

@@ -98,3 +98,23 @@ export async function toggleActivePelayan(id: string, newStatus: boolean) {
 
   revalidatePath('/master-data/pelayan')
 }
+
+/**
+ * Mengambil semua baris pelayan_gereja yang aktif.
+ */
+export async function listPelayanAktif() {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('pelayan_gereja')
+    .select('*')
+    .eq('is_active', true)
+    .order('nama_pelayan', { ascending: true })
+
+  if (error) {
+    throw new Error(`Gagal mengambil data pelayan aktif: ${error.message}`)
+  }
+
+  return data ?? []
+}
+
