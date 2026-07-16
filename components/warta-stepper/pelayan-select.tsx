@@ -141,7 +141,7 @@ export default function PelayanSelect({
             {displayValue}
           </SelectValue>
         </SelectTrigger>
-        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+        <SelectContent align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
           <SelectItem value="NONE" className="text-sm py-2">
             {placeholder}
           </SelectItem>

@@ -66,8 +66,12 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
     } else if (field === 'keluargaId') {
       item.keluargaId = value === 'NONE' ? null : value
     } else if (field === 'lk' || field === 'pr') {
-      const num = parseInt(value, 10)
-      item[field] = isNaN(num) ? 0 : num
+      if (value === '') {
+        (item as any)[field] = ''
+      } else {
+        const num = parseInt(value, 10)
+        item[field] = isNaN(num) ? 0 : num
+      }
     } else {
       (item as any)[field] = value
     }
@@ -132,7 +136,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
       <motion.div 
         className="border-2 border-slate-300 rounded-xl overflow-x-auto bg-white shadow-sm flex flex-col w-full"
       >
-        <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center min-w-[800px]">
+        <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center">
           <Home className="w-6 h-6 mr-3 text-slate-700" />
           <h3 className="text-xl font-bold text-slate-800">{teksMingguBerjalan}</h3>
         </div>
@@ -175,7 +179,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                         <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-bold text-sm bg-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                        <SelectContent align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                           {SEKTOR_LIST.map(s => (
                             <SelectItem key={s} value={s} className="text-sm font-bold py-2">
                               {s}
@@ -191,7 +195,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                             {displayKeluarga}
                           </SelectValue>
                         </SelectTrigger>
-                        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                        <SelectContent align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                           <SelectItem value="NONE" className="text-sm font-medium italic py-2">— Pilih Keluarga —</SelectItem>
                           {availableFamilies.map(f => (
                             <SelectItem key={f.id} value={f.id} className="text-sm font-medium py-2">
@@ -205,7 +209,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                       <Input
                         type="number"
                         min={0}
-                        value={item.lk === 0 ? '' : item.lk}
+                        value={item.lk !== null && item.lk !== undefined ? item.lk : ''}
                         onChange={(e) => handleUpdateKehadiran(index, 'lk', e.target.value)}
                         className="w-full h-12 text-sm border-2 border-slate-400 font-bold text-center"
                         placeholder="0"
@@ -215,7 +219,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                       <Input
                         type="number"
                         min={0}
-                        value={item.pr === 0 ? '' : item.pr}
+                        value={item.pr !== null && item.pr !== undefined ? item.pr : ''}
                         onChange={(e) => handleUpdateKehadiran(index, 'pr', e.target.value)}
                         className="w-full h-12 text-sm border-2 border-slate-400 font-bold text-center"
                         placeholder="0"
@@ -303,7 +307,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                         <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-bold text-sm bg-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                        <SelectContent align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                           {SEKTOR_LIST.map(s => (
                             <SelectItem key={s} value={s} className="text-sm font-bold py-2">
                               {s}
@@ -319,7 +323,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                             {displayKeluarga}
                           </SelectValue>
                         </SelectTrigger>
-                        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                        <SelectContent align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                           <SelectItem value="NONE" className="text-sm font-medium italic py-2">— Pilih Keluarga —</SelectItem>
                           {availableFamilies.map(f => (
                             <SelectItem key={f.id} value={f.id} className="text-sm font-medium py-2">

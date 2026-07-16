@@ -140,7 +140,8 @@ export async function getWartaDraft(edisiId: string): Promise<{
 // TIDAK melakukan insert/update tabel anak secara terpisah dari Next.js.
 // Satu panggilan RPC ini bersifat atomik di sisi Postgres.
 // ============================================================
-export async function simpanWartaFinal(edisiId: string, draft: WartaDraftState): Promise<void> {
+// Ekstrak logika utama untuk reusability
+async function _simpanWartaInternal(edisiId: string, draft: WartaDraftState): Promise<void> {
   const supabase = await createClient()
 
   // Ambil warta_id berdasarkan edisi_minggu_id
@@ -226,12 +227,23 @@ export async function simpanWartaFinal(edisiId: string, draft: WartaDraftState):
   if (error) {
     throw new Error(`Gagal menyimpan warta: ${error.message}`)
   }
+}
 
-  // localStorage dibersihkan di sisi client setelah action ini berhasil
-  // (dilakukan oleh komponen WartaStepperShell setelah promise resolved)
-
+export async function simpanWartaFinal(edisiId: string, draft: WartaDraftState): Promise<void> {
+  await _simpanWartaInternal(edisiId, draft)
   revalidatePath('/dashboard')
   redirect('/dashboard')
+}
+
+export async function simpanDraftWarta(edisiId: string, draft: WartaDraftState): Promise<void> {
+  await _simpanWartaInternal(edisiId, draft)
+  revalidatePath('/dashboard')
+}
+
+export async function hapusAtauResetWarta(edisiId: string): Promise<void> {
+  const emptyDraft = buildEmptyDraft()
+  await _simpanWartaInternal(edisiId, emptyDraft)
+  revalidatePath('/dashboard')
 }
 
 // ============================================================

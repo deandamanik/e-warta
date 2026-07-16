@@ -109,7 +109,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
                   <SelectTrigger className="w-full !h-12 text-sm border-2 border-slate-400 font-medium bg-white">
                     <SelectValue placeholder="— Pilih Model Kebaktian —" />
                   </SelectTrigger>
-                  <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                  <SelectContent align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                     {MODEL_KEBAKTIAN_OPTIONS.map((option) => (
                       <SelectItem key={option} value={option} className="text-sm font-medium py-2">
                         {option}
@@ -128,7 +128,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
                   <SelectTrigger className="w-full !h-12 text-sm border-2 border-slate-400 font-medium bg-white">
                     <SelectValue placeholder="— Pilih Warna Liturgi —" />
                   </SelectTrigger>
-                  <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                  <SelectContent align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                     {WARNA_LITURGI_OPTIONS.map((option) => (
                       <SelectItem key={option} value={option} className="text-sm font-medium py-2">
                         {option}
@@ -230,7 +230,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
                 <SelectTrigger className="w-full !h-12 text-sm border-2 border-slate-400 font-medium bg-white">
                   <SelectValue placeholder="— Pilih Model Kebaktian —" />
                 </SelectTrigger>
-                <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                <SelectContent align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                   {MODEL_KEBAKTIAN_OPTIONS.map((option) => (
                     <SelectItem key={option} value={option} className="text-sm font-medium py-2">
                       {option}

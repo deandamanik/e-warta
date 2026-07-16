@@ -66,8 +66,12 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
     let parsedValue = value
     
     if (field === 'lk' || field === 'pr') {
-      parsedValue = parseInt(value, 10)
-      if (isNaN(parsedValue)) parsedValue = 0
+      if (value === '') {
+        parsedValue = ''
+      } else {
+        parsedValue = parseInt(value, 10)
+        if (isNaN(parsedValue)) parsedValue = 0
+      }
     }
 
     const item = { ...(state.kehadiranItems || [])[index], [field]: parsedValue }
@@ -83,7 +87,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
       <motion.div 
         className="border-2 border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col w-full"
       >
-        <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center min-w-[800px]">
+        <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center">
           <Users className="w-6 h-6 mr-3 text-slate-700" />
           <h3 className="text-xl font-bold text-slate-800">{teksMingguLalu}</h3>
         </div>
@@ -128,7 +132,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                       <Input
                         type="number"
                         min={0}
-                        value={item.lk === 0 ? '' : item.lk}
+                        value={item.lk !== null && item.lk !== undefined ? item.lk : ''}
                         onChange={(e) => handleUpdate(index, 'lk', e.target.value)}
                         className="w-full h-12 text-sm border-2 border-slate-400 font-bold text-center"
                         placeholder="0"
@@ -138,7 +142,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                       <Input
                         type="number"
                         min={0}
-                        value={item.pr === 0 ? '' : item.pr}
+                        value={item.pr !== null && item.pr !== undefined ? item.pr : ''}
                         onChange={(e) => handleUpdate(index, 'pr', e.target.value)}
                         className="w-full h-12 text-sm border-2 border-slate-400 font-bold text-center"
                         placeholder="0"

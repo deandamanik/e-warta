@@ -2,20 +2,24 @@
 
 import React, { useReducer, useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Save, Loader2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Save, Loader2, BookOpen } from 'lucide-react'
 
 import { WartaDraftState, DodingItemDraft, KehadiranItemDraft, PartonggoanKehadiranDraft, PartonggoanJadwalDraft } from '@/lib/types/warta-draft'
-import { simpanWartaFinal } from '@/app/actions/warta'
+import { simpanWartaFinal, simpanDraftWarta, hapusAtauResetWarta } from '@/app/actions/warta'
 import StepperNav from './stepper-nav'
 import { Button } from '@/components/ui/button'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog'
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { toast } from 'sonner'
 
 import Step1JadwalPelayan from './step-1-jadwal-pelayan'
 import Step2Kehadiran from './step-2-kehadiran'
@@ -45,6 +49,7 @@ type Action =
   | { type: 'UPDATE_PARTONGGOAN_JADWAL'; index: number; item: PartonggoanJadwalDraft }
   | { type: 'REMOVE_PARTONGGOAN_JADWAL'; index: number }
   | { type: 'LOAD_DRAFT'; draft: WartaDraftState }
+  | { type: 'RESET_FORM' }
 
 function wartaDraftReducer(state: WartaDraftState, action: Action): WartaDraftState {
   switch (action.type) {
@@ -100,6 +105,38 @@ function wartaDraftReducer(state: WartaDraftState, action: Action): WartaDraftSt
     
     case 'LOAD_DRAFT':
       return action.draft
+      
+    case 'RESET_FORM':
+      return {
+        currentStep: 1,
+        tanggalIbadah: state.tanggalIbadah,
+        goranMinggu: '',
+        tema_minggu: '',
+        modelKebaktian: '',
+        warnaLiturgi: '',
+        ambilan: '',
+        sibasaon: '',
+        parAmbilan1Id: null,
+        parAmbilan2Id: null,
+        sipangidangiPagiId: null,
+        sipangidangiSiangId: null,
+        parOrganPagiId: null,
+        parOrganSiangId: null,
+        parmasukPukul: [],
+        nextModelKebaktian: '',
+        nextParAmbilan1Id: null,
+        nextParAmbilan2Id: null,
+        nextSipangidangiPagiId: null,
+        nextSipangidangiSiangId: null,
+        nextParOrganPagiId: null,
+        nextParOrganSiangId: null,
+        nextParmasukPukul: [],
+        dodingItems: [],
+        kehadiranItems: [],
+        partonggoanKehadiran: [],
+        partonggoanJadwal: [],
+        pengumumanHtml: '',
+      }
 
     default:
       return state
@@ -118,56 +155,33 @@ interface WartaStepperShellProps {
 export default function WartaStepperShell({ initialState, edisiId }: WartaStepperShellProps) {
   const [state, dispatch] = useReducer(wartaDraftReducer, initialState)
   const [isSaving, setIsSaving] = useState(false)
+  const [isSavingDraft, setIsSavingDraft] = useState(false)
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
+  const [resetKey, setResetKey] = useState(0)
   const [errorMsg, setErrorMsg] = useState('')
-  const [showDraftDialog, setShowDraftDialog] = useState(false)
-  const [savedDraft, setSavedDraft] = useState<WartaDraftState | null>(null)
   
-  const draftKey = `warta-draft-${edisiId}`
-  const initialLoadDone = useRef(false)
-
-  // 1. Mount effect to check localStorage for existing draft
-  useEffect(() => {
-    if (initialLoadDone.current) return
-    initialLoadDone.current = true
-
-    const localStr = localStorage.getItem(draftKey)
-    if (localStr) {
-      try {
-        const parsed = JSON.parse(localStr) as WartaDraftState
-        // We could compare parsed with initialState to see if it's "newer",
-        // but since we only save if it changes, just checking existence is a good indicator.
-        if (parsed && typeof parsed === 'object' && 'currentStep' in parsed) {
-          setSavedDraft(parsed)
-          setShowDraftDialog(true)
-        }
-      } catch (e) {
-        console.error("Failed to parse localStorage draft", e)
-      }
+  const handleResetForm = async () => {
+    setIsResetDialogOpen(false)
+    try {
+      await hapusAtauResetWarta(edisiId)
+      dispatch({ type: 'RESET_FORM' })
+      setResetKey(prev => prev + 1)
+      toast.success("Data warta di database telah dikosongkan.")
+    } catch (err: any) {
+      toast.error(err.message || 'Terjadi kesalahan saat mereset data.')
     }
-  }, [draftKey])
-
-  // 2. Effect to debounce save to localStorage when state changes
-  useEffect(() => {
-    // Skip saving if we are currently prompting about draft restoration
-    if (showDraftDialog) return
-
-    const timer = setTimeout(() => {
-      localStorage.setItem(draftKey, JSON.stringify(state))
-    }, 500)
-
-    return () => clearTimeout(timer)
-  }, [state, draftKey, showDraftDialog])
-
-  const handleRestoreDraft = () => {
-    if (savedDraft) {
-      dispatch({ type: 'LOAD_DRAFT', draft: savedDraft })
-    }
-    setShowDraftDialog(false)
   }
 
-  const handleDiscardDraft = () => {
-    setShowDraftDialog(false)
-    localStorage.removeItem(draftKey)
+  const handleSimpanDraftManual = async () => {
+    try {
+      setIsSavingDraft(true)
+      await simpanDraftWarta(edisiId, state)
+      setIsSavingDraft(false)
+      toast.success("Data berhasil disimpan ke database.", { description: "Data Anda aman." })
+    } catch (err: any) {
+      setIsSavingDraft(false)
+      toast.error(err.message || 'Terjadi kesalahan saat menyimpan draft.')
+    }
   }
 
   const validateStep = (targetStep: number): boolean => {
@@ -209,8 +223,6 @@ export default function WartaStepperShell({ initialState, edisiId }: WartaSteppe
       setIsSaving(true)
       setErrorMsg('')
       await simpanWartaFinal(edisiId, state)
-      // If success, clean localstorage
-      localStorage.removeItem(draftKey)
       // The server action redirects, so we might not even need to set isSaving false,
       // but just in case:
     } catch (err: any) {
@@ -222,31 +234,65 @@ export default function WartaStepperShell({ initialState, edisiId }: WartaSteppe
   return (
     <div className="w-full flex flex-col space-y-6">
       
-      {/* Draft Recovery Dialog */}
-      <Dialog open={showDraftDialog} onOpenChange={setShowDraftDialog}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold">Lanjutkan Draft?</DialogTitle>
-            <DialogDescription className="text-base text-slate-600 pt-2">
-              Kami menemukan draft isian warta yang belum tersimpan di browser Anda. Apakah Anda ingin melanjutkannya?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="mt-4 gap-2">
-            <Button variant="outline" onClick={handleDiscardDraft} className="border-2 border-slate-300">
-              Buang Draft
-            </Button>
-            <Button onClick={handleRestoreDraft} className="bg-[#185735] hover:bg-[#124228] text-white">
-              Ya, Lanjutkan
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* HEADER PAGE */}
+      <div className="flex justify-between items-center w-full border-b-4 border-slate-800 pb-4 mb-4">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 border-2 border-slate-900 shadow-md">
+            <BookOpen className="w-7 h-7" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+              Edit Warta Jemaat
+            </h1>
+            <p className="text-slate-600 font-medium text-lg mt-1">
+              Pengisian Data Tata Ibadah & Pelayanan
+            </p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+            <AlertDialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-red-300 bg-background hover:bg-red-50 text-red-600 hover:text-red-700 h-10 px-4">
+              Reset Form
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Kosongkan Form?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Seluruh data yang sudah Anda isi pada draf ini akan dihapus permanen.
+                  <br /><br />
+                  <span className="font-semibold text-red-600">
+                    PERINGATAN: Tindakan ini akan menghapus data secara permanen dari database.
+                  </span>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Batal</AlertDialogCancel>
+                <AlertDialogAction onClick={handleResetForm} className="bg-red-600 hover:bg-red-700 text-white">
+                  Ya, Lanjutkan
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <Button onClick={handleSimpanDraftManual} disabled={isSavingDraft} className="font-bold h-10 px-4">
+            {isSavingDraft ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Menyimpan...
+              </>
+            ) : (
+              "Simpan Draft"
+            )}
+          </Button>
+        </div>
+      </div>
 
       {/* Navigation Top */}
       <StepperNav currentStep={state.currentStep} onStepClick={handleGotoStep} />
 
       {/* Step Render */}
-      <div className="w-full bg-white border-2 border-slate-200 rounded-xl shadow-sm p-6 mb-6 min-h-[400px]">
+      <div key={resetKey} className="w-full bg-white border-2 border-slate-200 rounded-xl shadow-sm p-6 mb-6 min-h-[400px]">
         {state.currentStep === 1 && (
           <div className="animate-in fade-in duration-300">
             <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b-2 border-slate-200 pb-2">Langkah 1: Jadwal & Pelayan</h2>

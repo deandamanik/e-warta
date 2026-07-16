@@ -33,9 +33,14 @@ export default function Step4Pengumuman({ state, dispatch }: Step4PengumumanProp
 
   // Sinkronisasi jika draft di-load (tetapi jangan re-set jika sedang diedit agar kursor tidak lompat)
   useEffect(() => {
-    if (editor && state.pengumumanHtml && !isUpdating.current) {
+    if (editor && typeof state.pengumumanHtml === 'string' && !isUpdating.current) {
        if (editor.getHTML() !== state.pengumumanHtml) {
-         editor.commands.setContent(state.pengumumanHtml)
+         // Saat reset form (pengumumanHtml === ''), editor defaultnya me-return '<p></p>'
+         if (state.pengumumanHtml === '' && editor.getHTML() === '<p></p>') {
+           // Sudah ekuivalen kosong, biarkan
+         } else {
+           editor.commands.setContent(state.pengumumanHtml)
+         }
        }
     }
     isUpdating.current = false
