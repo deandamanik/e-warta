@@ -7,6 +7,9 @@ import WartaPrintLayout from '@/components/print/warta-print-layout'
 import { WartaDraftState } from '@/lib/types/warta-draft'
 import { listPelayanAktif } from '@/app/actions/pelayan'
 import { listJemaatAktif } from '@/app/actions/jemaat'
+import { Button } from '@/components/ui/button'
+import { format } from 'date-fns'
+import { id } from 'date-fns/locale'
 
 interface Step5PreviewProps {
   state: WartaDraftState
@@ -50,36 +53,56 @@ export default function Step5Preview({ state, dispatch }: Step5PreviewProps) {
     return () => { mounted = false }
   }, [])
 
+  useEffect(() => {
+    const originalTitle = document.title
+    if (state.tanggalIbadah) {
+      try {
+        const tgl = new Date(state.tanggalIbadah)
+        if (!isNaN(tgl.getTime())) {
+          const formattedDate = format(tgl, 'dd MMMM yyyy', { locale: id })
+          document.title = `Warta - Halaman Depan - ${formattedDate}`
+        } else {
+          document.title = 'Warta - Halaman Depan'
+        }
+      } catch (e) {
+        document.title = 'Warta - Halaman Depan'
+      }
+    } else {
+      document.title = 'Warta - Halaman Depan'
+    }
+
+    return () => {
+      document.title = originalTitle
+    }
+  }, [state.tanggalIbadah])
+
   return (
     <div className="flex flex-col gap-6 w-full">
       <motion.div 
-        className="border-2 border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col w-full"
+        className="border-2 border-slate-300 rounded-xl bg-white shadow-sm flex flex-col w-full"
       >
-        <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex flex-col gap-1">
-          <div className="flex items-center">
-            <Info className="w-6 h-6 mr-3 text-slate-700" />
-            <h3 className="text-xl font-bold text-slate-800">Preview Warta Jemaat</h3>
+        <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex justify-between items-center print:hidden">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center">
+              <Info className="w-6 h-6 mr-3 text-slate-700" />
+              <h3 className="text-xl font-bold text-slate-800">Preview Warta Jemaat</h3>
+            </div>
+            <p className="text-slate-600 font-medium ml-9">Pratinjau A4 sebelum mencetak</p>
           </div>
-          <p className="text-slate-600 font-medium ml-9">Pratinjau A4 sebelum mencetak</p>
+          <Button onClick={() => window.print()} size="lg">Cetak</Button>
         </div>
 
-        <div className="p-6 bg-slate-50">
-          <div className="mb-6 flex items-start p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
-            <Info className="w-5 h-5 text-blue-700 mr-3 mt-0.5 shrink-0" />
-            <p className="text-base text-slate-700 font-medium leading-relaxed">
-              Tinjau kembali data di bawah ini sebelum menyimpan. Anda masih bisa kembali ke langkah sebelumnya untuk melakukan koreksi.
-            </p>
-          </div>
-
+        <div className="w-full overflow-x-auto flex justify-center bg-transparent py-6">
           {/* The A4 Print Preview Container */}
-        <div className="relative border-2 border-slate-400 shadow-lg rounded-md bg-slate-300 p-8 flex justify-center">
-            <div className="mx-auto w-max shadow-2xl transition-opacity duration-300" style={{ opacity: loading ? 0.5 : 1 }}>
-              <WartaPrintLayout 
-                data={state} 
-                pelayanLookup={pelayanLookup}
-                keluargaLookup={keluargaLookup} 
-              />
-            </div>
+          <div 
+            className="w-max transition-opacity duration-300 print:fixed print:inset-0 print:bg-white print:z-[9999] print:block print:w-full print:h-full print:overflow-visible" 
+            style={{ opacity: loading ? 0.5 : 1 }}
+          >
+            <WartaPrintLayout 
+              data={state} 
+              pelayanLookup={pelayanLookup}
+              keluargaLookup={keluargaLookup} 
+            />
           </div>
         </div>
       </motion.div>
