@@ -59,44 +59,44 @@ function wartaDraftReducer(state: WartaDraftState, action: Action): WartaDraftSt
     
     // Arrays manipulation
     case 'ADD_DODING_ITEM':
-      return { ...state, dodingItems: [...state.dodingItems, action.item] }
+      return { ...state, dodingItems: [...(state.dodingItems || []), action.item] }
     case 'UPDATE_DODING_ITEM': {
-      const newArr = [...state.dodingItems]
+      const newArr = [...(state.dodingItems || [])]
       newArr[action.index] = action.item
       return { ...state, dodingItems: newArr }
     }
     case 'REMOVE_DODING_ITEM':
-      return { ...state, dodingItems: state.dodingItems.filter((_, i) => i !== action.index) }
+      return { ...state, dodingItems: (state.dodingItems || []).filter((_, i) => i !== action.index) }
     
     case 'ADD_KEHADIRAN_ITEM':
-      return { ...state, kehadiranItems: [...state.kehadiranItems, action.item] }
+      return { ...state, kehadiranItems: [...(state.kehadiranItems || []), action.item] }
     case 'UPDATE_KEHADIRAN_ITEM': {
-      const newArr = [...state.kehadiranItems]
+      const newArr = [...(state.kehadiranItems || [])]
       newArr[action.index] = action.item
       return { ...state, kehadiranItems: newArr }
     }
     case 'REMOVE_KEHADIRAN_ITEM':
-      return { ...state, kehadiranItems: state.kehadiranItems.filter((_, i) => i !== action.index) }
+      return { ...state, kehadiranItems: (state.kehadiranItems || []).filter((_, i) => i !== action.index) }
 
     case 'ADD_PARTONGGOAN_KEHADIRAN':
-      return { ...state, partonggoanKehadiran: [...state.partonggoanKehadiran, action.item] }
+      return { ...state, partonggoanKehadiran: [...(state.partonggoanKehadiran || []), action.item] }
     case 'UPDATE_PARTONGGOAN_KEHADIRAN': {
-      const newArr = [...state.partonggoanKehadiran]
+      const newArr = [...(state.partonggoanKehadiran || [])]
       newArr[action.index] = action.item
       return { ...state, partonggoanKehadiran: newArr }
     }
     case 'REMOVE_PARTONGGOAN_KEHADIRAN':
-      return { ...state, partonggoanKehadiran: state.partonggoanKehadiran.filter((_, i) => i !== action.index) }
+      return { ...state, partonggoanKehadiran: (state.partonggoanKehadiran || []).filter((_, i) => i !== action.index) }
 
     case 'ADD_PARTONGGOAN_JADWAL':
-      return { ...state, partonggoanJadwal: [...state.partonggoanJadwal, action.item] }
+      return { ...state, partonggoanJadwal: [...(state.partonggoanJadwal || []), action.item] }
     case 'UPDATE_PARTONGGOAN_JADWAL': {
-      const newArr = [...state.partonggoanJadwal]
+      const newArr = [...(state.partonggoanJadwal || [])]
       newArr[action.index] = action.item
       return { ...state, partonggoanJadwal: newArr }
     }
     case 'REMOVE_PARTONGGOAN_JADWAL':
-      return { ...state, partonggoanJadwal: state.partonggoanJadwal.filter((_, i) => i !== action.index) }
+      return { ...state, partonggoanJadwal: (state.partonggoanJadwal || []).filter((_, i) => i !== action.index) }
     
     case 'LOAD_DRAFT':
       return action.draft
@@ -220,7 +220,7 @@ export default function WartaStepperShell({ initialState, edisiId }: WartaSteppe
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto py-6">
+    <div className="w-full flex flex-col space-y-6">
       
       {/* Draft Recovery Dialog */}
       <Dialog open={showDraftDialog} onOpenChange={setShowDraftDialog}>
@@ -246,7 +246,7 @@ export default function WartaStepperShell({ initialState, edisiId }: WartaSteppe
       <StepperNav currentStep={state.currentStep} onStepClick={handleGotoStep} />
 
       {/* Step Render */}
-      <div className="bg-white border-2 border-slate-200 rounded-xl shadow-sm p-6 mb-6 min-h-[400px]">
+      <div className="w-full bg-white border-2 border-slate-200 rounded-xl shadow-sm p-6 mb-6 min-h-[400px]">
         {state.currentStep === 1 && (
           <div className="animate-in fade-in duration-300">
             <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b-2 border-slate-200 pb-2">Langkah 1: Jadwal & Pelayan</h2>

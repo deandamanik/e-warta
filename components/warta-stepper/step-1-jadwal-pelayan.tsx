@@ -21,17 +21,17 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
   }
 
   const handleAddJam = (field: 'parmasukPukul' | 'nextParmasukPukul') => {
-    dispatch({ type: 'SET_FIELD', field, value: [...state[field], ''] })
+    dispatch({ type: 'SET_FIELD', field, value: [...(state[field] || []), ''] })
   }
 
   const handleUpdateJam = (field: 'parmasukPukul' | 'nextParmasukPukul', index: number, val: string) => {
-    const newArr = [...state[field]]
+    const newArr = [...(state[field] || [])]
     newArr[index] = val
     dispatch({ type: 'SET_FIELD', field, value: newArr })
   }
 
   const handleRemoveJam = (field: 'parmasukPukul' | 'nextParmasukPukul', index: number) => {
-    const newArr = state[field].filter((_, i) => i !== index)
+    const newArr = (state[field] || []).filter((_, i) => i !== index)
     dispatch({ type: 'SET_FIELD', field, value: newArr })
   }
 
@@ -40,7 +40,6 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         {/* BLOK A - Minggu Berjalan */}
         <motion.div 
-          whileHover={{ scale: 1.005 }}
           className="border-2 border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col w-full"
         >
           <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center">
@@ -51,7 +50,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
             <div className="flex flex-col gap-2">
               <Label className="text-lg font-bold text-slate-800">Goran Minggu *</Label>
               <Input 
-                value={state.goranMinggu} 
+                value={state.goranMinggu || ""} 
                 onChange={(e) => handleChange('goranMinggu', e.target.value)} 
                 className="h-12 text-lg border-2 border-slate-400" 
                 placeholder="Contoh: Quasimodogeniti"
@@ -61,7 +60,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
             <div className="flex flex-col gap-2">
               <Label className="text-lg font-bold text-slate-800">Model Kebaktian</Label>
               <Input 
-                value={state.modelKebaktian} 
+                value={state.modelKebaktian || ""} 
                 onChange={(e) => handleChange('modelKebaktian', e.target.value)} 
                 className="h-12 text-lg border-2 border-slate-400" 
                 placeholder="Contoh: Umum / Paduan Suara"
@@ -71,7 +70,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
             <div className="flex flex-col gap-2">
               <Label className="text-lg font-bold text-slate-800">Warna Liturgi</Label>
               <Input 
-                value={state.warnaLiturgi} 
+                value={state.warnaLiturgi || ""} 
                 onChange={(e) => handleChange('warnaLiturgi', e.target.value)} 
                 className="h-12 text-lg border-2 border-slate-400" 
                 placeholder="Contoh: Putih"
@@ -81,7 +80,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
             <div className="flex flex-col gap-2">
               <Label className="text-lg font-bold text-slate-800">Ambilan</Label>
               <Input 
-                value={state.ambilan} 
+                value={state.ambilan || ""} 
                 onChange={(e) => handleChange('ambilan', e.target.value)} 
                 className="h-12 text-lg border-2 border-slate-400" 
                 placeholder="Ayat Ambilan"
@@ -91,7 +90,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
             <div className="flex flex-col gap-2">
               <Label className="text-lg font-bold text-slate-800">Sibasaon</Label>
               <Input 
-                value={state.sibasaon} 
+                value={state.sibasaon || ""} 
                 onChange={(e) => handleChange('sibasaon', e.target.value)} 
                 className="h-12 text-lg border-2 border-slate-400" 
                 placeholder="Ayat Sibasaon"
@@ -144,14 +143,14 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
                   Tambah
                 </Button>
               </div>
-              {state.parmasukPukul.length === 0 && (
+              {(state.parmasukPukul || []).length === 0 && (
                 <p className="text-slate-500 italic text-base">Belum ada jam ibadah ditambahkan.</p>
               )}
-              {state.parmasukPukul.map((jam, idx) => (
+              {(state.parmasukPukul || []).map((jam, idx) => (
                 <div key={idx} className="flex items-center gap-3">
                   <Input 
                     type="time" 
-                    value={jam} 
+                    value={jam || ""} 
                     onChange={(e) => handleUpdateJam('parmasukPukul', idx, e.target.value)}
                     className="h-12 text-lg border-2 border-slate-400 flex-1"
                   />
@@ -172,7 +171,6 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
 
         {/* BLOK B - Minggu Depan */}
         <motion.div 
-          whileHover={{ scale: 1.005 }}
           className="border-2 border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col w-full h-fit"
         >
           <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center">
@@ -183,7 +181,7 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
             <div className="flex flex-col gap-2">
               <Label className="text-lg font-bold text-slate-800">Model Kebaktian</Label>
               <Input 
-                value={state.nextModelKebaktian} 
+                value={state.nextModelKebaktian || ""} 
                 onChange={(e) => handleChange('nextModelKebaktian', e.target.value)} 
                 className="h-12 text-lg border-2 border-slate-400" 
                 placeholder="Contoh: Umum / Paduan Suara"
@@ -236,14 +234,14 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
                   Tambah
                 </Button>
               </div>
-              {state.nextParmasukPukul.length === 0 && (
+              {(state.nextParmasukPukul || []).length === 0 && (
                 <p className="text-slate-500 italic text-base">Belum ada jam ibadah ditambahkan.</p>
               )}
-              {state.nextParmasukPukul.map((jam, idx) => (
+              {(state.nextParmasukPukul || []).map((jam, idx) => (
                 <div key={idx} className="flex items-center gap-3">
                   <Input 
                     type="time" 
-                    value={jam} 
+                    value={jam || ""} 
                     onChange={(e) => handleUpdateJam('nextParmasukPukul', idx, e.target.value)}
                     className="h-12 text-lg border-2 border-slate-400 flex-1"
                   />
@@ -265,7 +263,6 @@ export default function Step1JadwalPelayan({ state, dispatch }: Step1JadwalPelay
 
       {/* BLOK C - Nomor Doding */}
       <motion.div 
-        whileHover={{ scale: 1.005 }}
         className="border-2 border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col w-full"
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center">

@@ -100,8 +100,7 @@ export async function toggleActivePelayan(id: string, newStatus: boolean) {
 }
 
 /**
- * Mengambil semua baris pelayan_gereja yang aktif (is_active = true),
- * diurutkan berdasarkan nama_pelayan asc.
+ * Mengambil semua baris pelayan_gereja yang aktif.
  */
 export async function listPelayanAktif() {
   const supabase = await createClient()
@@ -118,3 +117,4 @@ export async function listPelayanAktif() {
 
   return data ?? []
 }
+

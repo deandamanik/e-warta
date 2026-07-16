@@ -23,7 +23,7 @@ export default function DodingListInput({ items, dispatch }: DodingListInputProp
   }
 
   const handleUpdate = (index: number, field: keyof DodingItemDraft, value: string) => {
-    const item = { ...items[index], [field]: value }
+    const item = { ...(items || [])[index], [field]: value }
     dispatch({ type: 'UPDATE_DODING_ITEM', index, item })
   }
 
@@ -33,11 +33,11 @@ export default function DodingListInput({ items, dispatch }: DodingListInputProp
 
   return (
     <div className="flex flex-col gap-4">
-      {items.length === 0 && (
+      {(items || []).length === 0 && (
         <p className="text-slate-500 italic text-base">Belum ada lagu ditambahkan.</p>
       )}
 
-      {items.map((item, index) => (
+      {(items || []).map((item, index) => (
         <div key={item.localId} className="flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="flex items-center gap-3 flex-1">
             {/* LABEL STATIS TERKUNCI (BR-03) */}

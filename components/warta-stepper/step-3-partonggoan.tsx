@@ -57,7 +57,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
   }
 
   const handleUpdateKehadiran = (index: number, field: keyof PartonggoanKehadiranDraft, value: any) => {
-    const item = { ...state.partonggoanKehadiran[index] }
+    const item = { ...(state.partonggoanKehadiran || [])[index] }
     if (field === 'sektor') {
       item.sektor = value
       item.keluargaId = null // WAJIB reset Ianan/Rumah ke kosong
@@ -91,7 +91,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
   }
 
   const handleUpdateJadwal = (index: number, field: keyof PartonggoanJadwalDraft, value: any) => {
-    const item = { ...state.partonggoanJadwal[index] }
+    const item = { ...(state.partonggoanJadwal || [])[index] }
     if (field === 'sektor') {
       item.sektor = value
       item.keluargaId = null // reset
@@ -111,7 +111,6 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
     <div className="flex flex-col gap-10 w-full">
       {/* SUB-BLOK 1: KEHADIRAN PARTONGGOAN */}
       <motion.div 
-        whileHover={{ scale: 1.002 }}
         className="border-2 border-slate-300 rounded-xl overflow-x-auto bg-white shadow-sm flex flex-col w-full"
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center min-w-[800px]">
@@ -119,8 +118,9 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
           <h3 className="text-xl font-bold text-slate-800">Kehadiran Partonggoan — Minggu Berjalan</h3>
         </div>
         
-        <div className="p-6 min-w-[800px]">
-          <table className="w-full border-collapse">
+        <div className="p-6">
+          <div className="w-full overflow-x-auto pb-4">
+            <table className="w-full min-w-[800px] border-collapse">
             <thead>
               <tr className="bg-slate-50 border-y-2 border-slate-300">
                 <th className="py-3 px-4 text-left font-bold text-slate-700 w-32">Sektor</th>
@@ -132,22 +132,28 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
               </tr>
             </thead>
             <tbody>
-              {state.partonggoanKehadiran.length === 0 && (
+              {(state.partonggoanKehadiran || []).length === 0 && (
                 <tr>
                   <td colSpan={6} className="py-6 text-center text-slate-500 italic text-base">
                     Belum ada data kehadiran partonggoan.
                   </td>
                 </tr>
               )}
-              {state.partonggoanKehadiran.map((item, index) => {
-                const jlhHadir = (Number(item.lk) || 0) + (Number(item.pr) || 0)
+              {(state.partonggoanKehadiran || []).map((item, index) => {
                 const availableFamilies = families.filter(f => f.sektor === item.sektor)
+                const jlhHadir = (Number(item.lk) || 0) + (Number(item.pr) || 0)
+                
+                const selectedFamily = availableFamilies.find(f => f.id === item.keluargaId)
+                let displayKeluarga: string | undefined = undefined
+                if (item.keluargaId && item.keluargaId !== 'NONE') {
+                  displayKeluarga = selectedFamily ? selectedFamily.nama_keluarga : (families.length === 0 ? 'Memuat...' : item.keluargaId)
+                }
                 
                 return (
                   <tr key={item.localId} className="border-b-2 border-slate-200 hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-4">
                       <Select value={item.sektor} onValueChange={(val) => handleUpdateKehadiran(index, 'sektor', val)}>
-                        <SelectTrigger className="w-full h-12 border-2 border-slate-400 font-bold text-lg bg-white">
+                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-bold text-lg bg-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="border-2 border-slate-300">
@@ -161,8 +167,10 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                     </td>
                     <td className="py-3 px-4">
                       <Select value={item.keluargaId || 'NONE'} onValueChange={(val) => handleUpdateKehadiran(index, 'keluargaId', val)}>
-                        <SelectTrigger className="w-full h-12 border-2 border-slate-400 font-medium text-lg bg-white">
-                          <SelectValue placeholder="— Pilih Keluarga —" />
+                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-medium text-lg bg-white">
+                          <SelectValue placeholder="— Pilih Keluarga —">
+                            {displayKeluarga}
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent className="border-2 border-slate-300 max-h-60">
                           <SelectItem value="NONE" className="text-lg font-medium italic">— Pilih Keluarga —</SelectItem>
@@ -180,7 +188,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                         min={0}
                         value={item.lk === 0 ? '' : item.lk}
                         onChange={(e) => handleUpdateKehadiran(index, 'lk', e.target.value)}
-                        className="h-12 border-2 border-slate-400 font-bold text-center text-lg"
+                        className="w-full h-12 border-2 border-slate-400 font-bold text-center text-lg"
                         placeholder="0"
                       />
                     </td>
@@ -190,12 +198,12 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                         min={0}
                         value={item.pr === 0 ? '' : item.pr}
                         onChange={(e) => handleUpdateKehadiran(index, 'pr', e.target.value)}
-                        className="h-12 border-2 border-slate-400 font-bold text-center text-lg"
+                        className="w-full h-12 border-2 border-slate-400 font-bold text-center text-lg"
                         placeholder="0"
                       />
                     </td>
                     <td className="py-3 px-4">
-                      <div className="h-12 flex items-center justify-center bg-slate-200 border-2 border-slate-300 rounded-md text-xl font-extrabold text-slate-900">
+                      <div className="w-full h-12 flex items-center justify-center bg-slate-200 border-2 border-slate-300 rounded-md text-xl font-extrabold text-slate-900">
                         {jlhHadir}
                       </div>
                     </td>
@@ -213,7 +221,8 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                 )
               })}
             </tbody>
-          </table>
+            </table>
+          </div>
 
           <div className="pt-6">
             <Button
@@ -232,7 +241,6 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
 
       {/* SUB-BLOK 2: JADWAL IANAN & SIPARTUGAS */}
       <motion.div 
-        whileHover={{ scale: 1.002 }}
         className="border-2 border-slate-300 rounded-xl overflow-x-auto bg-white shadow-sm flex flex-col w-full"
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center min-w-[800px]">
@@ -240,8 +248,9 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
           <h3 className="text-xl font-bold text-slate-800">Jadwal Ianan & Sipartugas — Minggu Depan</h3>
         </div>
         
-        <div className="p-6 min-w-[800px]">
-          <table className="w-full border-collapse">
+        <div className="p-6">
+          <div className="w-full overflow-x-auto pb-4">
+            <table className="w-full min-w-[800px] border-collapse">
             <thead>
               <tr className="bg-slate-50 border-y-2 border-slate-300">
                 <th className="py-3 px-4 text-left font-bold text-slate-700 w-32">Sektor</th>
@@ -252,21 +261,27 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
               </tr>
             </thead>
             <tbody>
-              {state.partonggoanJadwal.length === 0 && (
+              {(state.partonggoanJadwal || []).length === 0 && (
                 <tr>
                   <td colSpan={5} className="py-6 text-center text-slate-500 italic text-base">
                     Belum ada data jadwal partonggoan minggu depan.
                   </td>
                 </tr>
               )}
-              {state.partonggoanJadwal.map((item, index) => {
+              {(state.partonggoanJadwal || []).map((item, index) => {
                 const availableFamilies = families.filter(f => f.sektor === item.sektor)
+                
+                const selectedFamily = availableFamilies.find(f => f.id === item.keluargaId)
+                let displayKeluarga: string | undefined = undefined
+                if (item.keluargaId && item.keluargaId !== 'NONE') {
+                  displayKeluarga = selectedFamily ? selectedFamily.nama_keluarga : (families.length === 0 ? 'Memuat...' : item.keluargaId)
+                }
                 
                 return (
                   <tr key={item.localId} className="border-b-2 border-slate-200 hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-4">
                       <Select value={item.sektor} onValueChange={(val) => handleUpdateJadwal(index, 'sektor', val)}>
-                        <SelectTrigger className="w-full h-12 border-2 border-slate-400 font-bold text-lg bg-white">
+                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-bold text-lg bg-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="border-2 border-slate-300">
@@ -280,8 +295,10 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                     </td>
                     <td className="py-3 px-4">
                       <Select value={item.keluargaId || 'NONE'} onValueChange={(val) => handleUpdateJadwal(index, 'keluargaId', val)}>
-                        <SelectTrigger className="w-full h-12 border-2 border-slate-400 font-medium text-lg bg-white">
-                          <SelectValue placeholder="— Pilih Keluarga —" />
+                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-medium text-lg bg-white">
+                          <SelectValue placeholder="— Pilih Keluarga —">
+                            {displayKeluarga}
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent className="border-2 border-slate-300 max-h-60">
                           <SelectItem value="NONE" className="text-lg font-medium italic">— Pilih Keluarga —</SelectItem>
@@ -294,7 +311,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                       </Select>
                     </td>
                     <td className="py-3 px-4">
-                      <div className="-mt-2 w-full max-w-[280px]">
+                      <div className="-mt-2 w-full">
                         <PelayanSelect
                           label=""
                           value={item.parAmbilanId}
@@ -303,7 +320,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                       </div>
                     </td>
                     <td className="py-3 px-4">
-                      <div className="-mt-2 w-full max-w-[280px]">
+                      <div className="-mt-2 w-full">
                         <PelayanSelect
                           label=""
                           value={item.parAgendaId}
@@ -325,7 +342,8 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                 )
               })}
             </tbody>
-          </table>
+            </table>
+          </div>
 
           <div className="pt-6">
             <Button

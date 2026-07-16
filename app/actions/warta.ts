@@ -88,7 +88,7 @@ export async function getWartaDraft(edisiId: string): Promise<{
     sipangidangiSiangId:      warta.sipangidangi_siang_id ?? null,
     parOrganPagiId:           warta.par_organ_pagi_id ?? null,
     parOrganSiangId:          warta.par_organ_siang_id ?? null,
-    parmasukPukul:            warta.parmasuk_pukul ?? [],
+    parmasukPukul:            warta.parmasuk_pukul || [],
     nextModelKebaktian:       warta.next_model_kebaktian ?? '',
     nextParAmbilan1Id:        warta.next_par_ambilan_1_id ?? null,
     nextParAmbilan2Id:        warta.next_par_ambilan_2_id ?? null,
@@ -96,14 +96,14 @@ export async function getWartaDraft(edisiId: string): Promise<{
     nextSipangidangiSiangId:  warta.next_sipangidangi_siang_id ?? null,
     nextParOrganPagiId:       warta.next_par_organ_pagi_id ?? null,
     nextParOrganSiangId:      warta.next_par_organ_siang_id ?? null,
-    nextParmasukPukul:        warta.next_parmasuk_pukul ?? [],
-    dodingItems: (dodingRes.data ?? []).map((row) => ({
+    nextParmasukPukul:        warta.next_parmasuk_pukul || [],
+    dodingItems: (dodingRes.data || []).map((row) => ({
       localId:    row.id,
       nomorLagu:  row.nomor_lagu ?? '',
       notasiBait: row.notasi_bait ?? '',
     })),
     // Step 2
-    kehadiranItems: (kehadiranRes.data ?? []).map((row) => ({
+    kehadiranItems: (kehadiranRes.data || []).map((row) => ({
       localId:  row.id,
       tanggal:  row.tanggal ?? null,
       uraian:   row.uraian ?? '',
@@ -111,14 +111,14 @@ export async function getWartaDraft(edisiId: string): Promise<{
       pr:       row.pr ?? 0,
     })),
     // Step 3
-    partonggoanKehadiran: (partonggoanKhRes.data ?? []).map((row) => ({
+    partonggoanKehadiran: (partonggoanKhRes.data || []).map((row) => ({
       localId:    row.id,
       sektor:     row.sektor as 'I' | 'II' | 'III' | 'IV' | 'V',
       keluargaId: row.keluarga_id ?? null,
       lk:         row.lk ?? 0,
       pr:         row.pr ?? 0,
     })),
-    partonggoanJadwal: (partonggoanJdwRes.data ?? []).map((row) => ({
+    partonggoanJadwal: (partonggoanJdwRes.data || []).map((row) => ({
       localId:      row.id,
       sektor:       row.sektor as 'I' | 'II' | 'III' | 'IV' | 'V',
       keluargaId:   row.keluarga_id ?? null,

@@ -24,7 +24,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
   
   // Populasi otomatis saat pertama kali dibuka jika masih kosong
   useEffect(() => {
-    if (state.kehadiranItems.length === 0) {
+    if ((state.kehadiranItems || []).length === 0) {
       const newItems: KehadiranItemDraft[] = DEFAULT_PRESETS.map((uraian) => ({
         localId: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(),
         tanggal: '',
@@ -34,7 +34,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
       }))
       dispatch({ type: 'SET_FIELD', field: 'kehadiranItems', value: newItems })
     }
-  }, [state.kehadiranItems.length, dispatch])
+  }, [(state.kehadiranItems || []).length, dispatch])
 
   const handleAdd = () => {
     const newItem: KehadiranItemDraft = {
@@ -55,7 +55,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
       if (isNaN(parsedValue)) parsedValue = 0
     }
 
-    const item = { ...state.kehadiranItems[index], [field]: parsedValue }
+    const item = { ...(state.kehadiranItems || [])[index], [field]: parsedValue }
     dispatch({ type: 'UPDATE_KEHADIRAN_ITEM', index, item })
   }
 
@@ -66,16 +66,16 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
   return (
     <div className="flex flex-col gap-6 w-full">
       <motion.div 
-        whileHover={{ scale: 1.005 }}
-        className="border-2 border-slate-300 rounded-xl overflow-x-auto bg-white shadow-sm flex flex-col w-full"
+        className="border-2 border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col w-full"
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center min-w-[800px]">
           <Users className="w-6 h-6 mr-3 text-slate-700" />
           <h3 className="text-xl font-bold text-slate-800">Kehadiran Jemaat (Minggu Lalu)</h3>
         </div>
         
-        <div className="p-6 min-w-[800px]">
-          <table className="w-full border-collapse">
+        <div className="p-6">
+          <div className="w-full overflow-x-auto pb-4">
+            <table className="w-full min-w-[800px] border-collapse">
             <thead>
               <tr className="bg-slate-50 border-y-2 border-slate-300">
                 <th className="py-3 px-4 text-left font-bold text-slate-700 w-1/5">Tanggal</th>
@@ -87,7 +87,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
               </tr>
             </thead>
             <tbody>
-              {state.kehadiranItems.map((item, index) => {
+              {(state.kehadiranItems || []).map((item, index) => {
                 const jlhHadir = (Number(item.lk) || 0) + (Number(item.pr) || 0)
                 
                 return (
@@ -97,7 +97,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                         type="date"
                         value={item.tanggal || ''}
                         onChange={(e) => handleUpdate(index, 'tanggal', e.target.value)}
-                        className="h-12 border-2 border-slate-400 font-medium"
+                        className="w-full h-12 border-2 border-slate-400 font-medium"
                       />
                     </td>
                     <td className="py-3 px-4">
@@ -106,7 +106,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                         placeholder="Contoh: Kebaktian Pagi"
                         value={item.uraian}
                         onChange={(e) => handleUpdate(index, 'uraian', e.target.value)}
-                        className="h-12 border-2 border-slate-400 font-medium text-base"
+                        className="w-full h-12 border-2 border-slate-400 font-medium text-base"
                       />
                     </td>
                     <td className="py-3 px-4">
@@ -115,7 +115,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                         min={0}
                         value={item.lk === 0 ? '' : item.lk}
                         onChange={(e) => handleUpdate(index, 'lk', e.target.value)}
-                        className="h-12 border-2 border-slate-400 font-bold text-center text-lg"
+                        className="w-full h-12 border-2 border-slate-400 font-bold text-center text-lg"
                         placeholder="0"
                       />
                     </td>
@@ -125,12 +125,12 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                         min={0}
                         value={item.pr === 0 ? '' : item.pr}
                         onChange={(e) => handleUpdate(index, 'pr', e.target.value)}
-                        className="h-12 border-2 border-slate-400 font-bold text-center text-lg"
+                        className="w-full h-12 border-2 border-slate-400 font-bold text-center text-lg"
                         placeholder="0"
                       />
                     </td>
                     <td className="py-3 px-4">
-                      <div className="h-12 flex items-center justify-center bg-slate-200 border-2 border-slate-300 rounded-md text-xl font-extrabold text-slate-900">
+                      <div className="w-full h-12 flex items-center justify-center bg-slate-200 border-2 border-slate-300 rounded-md text-xl font-extrabold text-slate-900">
                         {jlhHadir}
                       </div>
                     </td>
@@ -148,7 +148,8 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                 )
               })}
             </tbody>
-          </table>
+            </table>
+          </div>
 
           <div className="pt-6">
             <Button

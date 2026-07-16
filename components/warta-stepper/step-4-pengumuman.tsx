@@ -48,7 +48,6 @@ export default function Step4Pengumuman({ state, dispatch }: Step4PengumumanProp
   return (
     <div className="flex flex-col gap-6 w-full">
       <motion.div 
-        whileHover={{ scale: 1.002 }}
         className="border-2 border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col w-full"
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex flex-col gap-1">

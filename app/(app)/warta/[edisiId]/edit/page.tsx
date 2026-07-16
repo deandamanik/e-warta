@@ -22,7 +22,7 @@ export default async function WartaEditPage({ params }: PageProps) {
   const initialData = await getWartaDraft(edisiId)
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto p-4 md:p-8">
+    <div className="w-full p-4 md:p-6 lg:p-8 flex flex-col gap-6">
       {/* HEADER PAGE */}
       <div className="flex items-center justify-between border-b-4 border-slate-800 pb-4 mb-4">
         <div className="flex items-center gap-4">

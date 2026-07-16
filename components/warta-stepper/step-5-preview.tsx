@@ -53,7 +53,6 @@ export default function Step5Preview({ state, dispatch }: Step5PreviewProps) {
   return (
     <div className="flex flex-col gap-6 w-full">
       <motion.div 
-        whileHover={{ scale: 1.002 }}
         className="border-2 border-slate-300 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col w-full"
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex flex-col gap-1">
@@ -73,11 +72,11 @@ export default function Step5Preview({ state, dispatch }: Step5PreviewProps) {
           </div>
 
           {/* The A4 Print Preview Container */}
-          <div className="relative w-full overflow-x-auto overflow-y-auto max-h-[800px] border-2 border-slate-400 shadow-lg rounded-md bg-slate-300 p-8">
-            <div className="mx-auto bg-white shadow-sm transition-opacity duration-300" style={{ width: '210mm', minHeight: '297mm', opacity: loading ? 0.5 : 1 }}>
+        <div className="relative border-2 border-slate-400 shadow-lg rounded-md bg-slate-300 p-8 flex justify-center">
+            <div className="mx-auto w-max shadow-2xl transition-opacity duration-300" style={{ opacity: loading ? 0.5 : 1 }}>
               <WartaPrintLayout 
                 data={state} 
-                pelayanLookup={pelayanLookup} 
+                pelayanLookup={pelayanLookup}
                 keluargaLookup={keluargaLookup} 
               />
             </div>
