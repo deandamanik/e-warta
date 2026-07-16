@@ -76,8 +76,10 @@ export async function getWartaDraft(edisiId: string): Promise<{
 
   const draft: WartaDraftState = {
     currentStep: 1,
+    tanggalIbadah,
     // Step 1 — warta fields
     goranMinggu:              warta.goran_minggu ?? '',
+    tema_minggu:              warta.tema_minggu ?? '',
     modelKebaktian:           warta.model_kebaktian ?? '',
     warnaLiturgi:             warta.warna_liturgi ?? '',
     ambilan:                  warta.ambilan ?? '',
@@ -157,6 +159,7 @@ export async function simpanWartaFinal(edisiId: string, draft: WartaDraftState):
   // Bangun payload warta_fields (semua field skalar)
   const wartaFields = {
     goran_minggu:               draft.goranMinggu,
+    tema_minggu:                draft.tema_minggu,
     model_kebaktian:            draft.modelKebaktian,
     warna_liturgi:              draft.warnaLiturgi,
     ambilan:                    draft.ambilan,
@@ -237,7 +240,9 @@ export async function simpanWartaFinal(edisiId: string, draft: WartaDraftState):
 function buildEmptyDraft(): WartaDraftState {
   return {
     currentStep:              1,
+    tanggalIbadah:            null,
     goranMinggu:              '',
+    tema_minggu:              '',
     modelKebaktian:           '',
     warnaLiturgi:             '',
     ambilan:                  '',

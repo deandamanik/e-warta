@@ -30,8 +30,10 @@ export interface PartonggoanJadwalDraft {
 
 export interface WartaDraftState {
   currentStep: 1 | 2 | 3 | 4 | 5
+  tanggalIbadah?: string | null
   // Step 1
   goranMinggu: string
+  tema_minggu?: string
   modelKebaktian: string
   warnaLiturgi: string
   ambilan: string

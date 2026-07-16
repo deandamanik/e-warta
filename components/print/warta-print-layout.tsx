@@ -85,11 +85,13 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
           <SectionHeading title="I. Kebaktian Minggu, 12 Juli 2026" align="left" />
 
           {/* KOTAK TEMA (mis. "Marsiurupan") */}
-          <div className="flex justify-center mb-1.5">
-            <div className="border border-black px-6 py-0.5">
-              <p className="font-bold italic text-[11px]">Marsiurupan</p>
+          {data.tema_minggu && (
+            <div className="flex justify-center mb-1.5">
+              <div className="border border-black px-6 py-0.5">
+                <p className="font-bold italic text-[11px]">{data.tema_minggu}</p>
+              </div>
             </div>
-          </div>
+          )}
 
           <ul className="list-none pl-0 mb-2">
             <BulletKVRow label="Goran Minggu"       value={data.goranMinggu || '—'} />
@@ -97,7 +99,7 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
             <BulletKVRow label="Warna Liturgi"       value={data.warnaLiturgi || '—'} />
             <BulletKVRow label="Ambilan"             value={data.ambilan || '—'} />
             <BulletKVRow label="Sibasaon"            value={data.sibasaon || '—'} />
-            <BulletKVRow label="Par-Ambilan"         value={[Name(pelayanLookup, data.parAmbilan1Id), Name(pelayanLookup, data.parAmbilan2Id)].filter(v => v !== '—').join(' / ') || '—'} />
+            <BulletKVRow label="Par-Ambilan"         value={[Name(pelayanLookup, data.parAmbilan1Id), Name(pelayanLookup, data.parAmbilan2Id)].filter(v => v !== '—').join(' & ') || '—'} />
             <BulletKVRow label="Sipangidangi Pagi"   value={Name(pelayanLookup, data.sipangidangiPagiId)} />
             <BulletKVRow label="Sipangidangi Siang"  value={Name(pelayanLookup, data.sipangidangiSiangId)} />
             <BulletKVRow label="Par-Organ Pagi"      value={Name(pelayanLookup, data.parOrganPagiId)} />

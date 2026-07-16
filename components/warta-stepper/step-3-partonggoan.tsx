@@ -153,12 +153,12 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                   <tr key={item.localId} className="border-b-2 border-slate-200 hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-4">
                       <Select value={item.sektor} onValueChange={(val) => handleUpdateKehadiran(index, 'sektor', val)}>
-                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-bold text-lg bg-white">
+                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-bold text-sm bg-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="border-2 border-slate-300">
+                        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                           {SEKTOR_LIST.map(s => (
-                            <SelectItem key={s} value={s} className="text-lg font-bold">
+                            <SelectItem key={s} value={s} className="text-sm font-bold py-2">
                               {s}
                             </SelectItem>
                           ))}
@@ -167,15 +167,15 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                     </td>
                     <td className="py-3 px-4">
                       <Select value={item.keluargaId || 'NONE'} onValueChange={(val) => handleUpdateKehadiran(index, 'keluargaId', val)}>
-                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-medium text-lg bg-white">
+                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-medium text-sm bg-white">
                           <SelectValue placeholder="— Pilih Keluarga —">
                             {displayKeluarga}
                           </SelectValue>
                         </SelectTrigger>
-                        <SelectContent className="border-2 border-slate-300 max-h-60">
-                          <SelectItem value="NONE" className="text-lg font-medium italic">— Pilih Keluarga —</SelectItem>
+                        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                          <SelectItem value="NONE" className="text-sm font-medium italic py-2">— Pilih Keluarga —</SelectItem>
                           {availableFamilies.map(f => (
-                            <SelectItem key={f.id} value={f.id} className="text-lg font-medium">
+                            <SelectItem key={f.id} value={f.id} className="text-sm font-medium py-2">
                               {f.nama_keluarga}
                             </SelectItem>
                           ))}
@@ -188,7 +188,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                         min={0}
                         value={item.lk === 0 ? '' : item.lk}
                         onChange={(e) => handleUpdateKehadiran(index, 'lk', e.target.value)}
-                        className="w-full h-12 border-2 border-slate-400 font-bold text-center text-lg"
+                        className="w-full h-12 text-sm border-2 border-slate-400 font-bold text-center"
                         placeholder="0"
                       />
                     </td>
@@ -198,7 +198,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                         min={0}
                         value={item.pr === 0 ? '' : item.pr}
                         onChange={(e) => handleUpdateKehadiran(index, 'pr', e.target.value)}
-                        className="w-full h-12 border-2 border-slate-400 font-bold text-center text-lg"
+                        className="w-full h-12 text-sm border-2 border-slate-400 font-bold text-center"
                         placeholder="0"
                       />
                     </td>
@@ -281,12 +281,12 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                   <tr key={item.localId} className="border-b-2 border-slate-200 hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-4">
                       <Select value={item.sektor} onValueChange={(val) => handleUpdateJadwal(index, 'sektor', val)}>
-                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-bold text-lg bg-white">
+                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-bold text-sm bg-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="border-2 border-slate-300">
+                        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
                           {SEKTOR_LIST.map(s => (
-                            <SelectItem key={s} value={s} className="text-lg font-bold">
+                            <SelectItem key={s} value={s} className="text-sm font-bold py-2">
                               {s}
                             </SelectItem>
                           ))}
@@ -295,15 +295,15 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                     </td>
                     <td className="py-3 px-4">
                       <Select value={item.keluargaId || 'NONE'} onValueChange={(val) => handleUpdateJadwal(index, 'keluargaId', val)}>
-                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-medium text-lg bg-white">
+                        <SelectTrigger className="w-full !h-12 border-2 border-slate-400 font-medium text-sm bg-white">
                           <SelectValue placeholder="— Pilih Keluarga —">
                             {displayKeluarga}
                           </SelectValue>
                         </SelectTrigger>
-                        <SelectContent className="border-2 border-slate-300 max-h-60">
-                          <SelectItem value="NONE" className="text-lg font-medium italic">— Pilih Keluarga —</SelectItem>
+                        <SelectContent ref={(ref) => { if (ref) ref.style.position = 'absolute'; }} align="start" side="bottom" sideOffset={4} className="max-h-[300px] overflow-y-auto">
+                          <SelectItem value="NONE" className="text-sm font-medium italic py-2">— Pilih Keluarga —</SelectItem>
                           {availableFamilies.map(f => (
-                            <SelectItem key={f.id} value={f.id} className="text-lg font-medium">
+                            <SelectItem key={f.id} value={f.id} className="text-sm font-medium py-2">
                               {f.nama_keluarga}
                             </SelectItem>
                           ))}

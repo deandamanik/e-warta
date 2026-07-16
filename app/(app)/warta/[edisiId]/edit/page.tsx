@@ -41,7 +41,7 @@ export default async function WartaEditPage({ params }: PageProps) {
       </div>
 
       {/* STEPPER SHELL */}
-      <WartaStepperShell edisiId={edisiId} initialState={initialData} />
+      <WartaStepperShell edisiId={edisiId} initialState={initialData.draft} />
     </div>
   )
 }

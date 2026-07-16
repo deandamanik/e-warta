@@ -97,7 +97,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                         type="date"
                         value={item.tanggal || ''}
                         onChange={(e) => handleUpdate(index, 'tanggal', e.target.value)}
-                        className="w-full h-12 border-2 border-slate-400 font-medium"
+                        className="w-full h-12 text-sm border-2 border-slate-400 font-medium"
                       />
                     </td>
                     <td className="py-3 px-4">
@@ -106,7 +106,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                         placeholder="Contoh: Kebaktian Pagi"
                         value={item.uraian}
                         onChange={(e) => handleUpdate(index, 'uraian', e.target.value)}
-                        className="w-full h-12 border-2 border-slate-400 font-medium text-base"
+                        className="w-full h-12 text-sm border-2 border-slate-400 font-medium"
                       />
                     </td>
                     <td className="py-3 px-4">
@@ -115,7 +115,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                         min={0}
                         value={item.lk === 0 ? '' : item.lk}
                         onChange={(e) => handleUpdate(index, 'lk', e.target.value)}
-                        className="w-full h-12 border-2 border-slate-400 font-bold text-center text-lg"
+                        className="w-full h-12 text-sm border-2 border-slate-400 font-bold text-center"
                         placeholder="0"
                       />
                     </td>
@@ -125,7 +125,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
                         min={0}
                         value={item.pr === 0 ? '' : item.pr}
                         onChange={(e) => handleUpdate(index, 'pr', e.target.value)}
-                        className="w-full h-12 border-2 border-slate-400 font-bold text-center text-lg"
+                        className="w-full h-12 text-sm border-2 border-slate-400 font-bold text-center"
                         placeholder="0"
                       />
                     </td>
