@@ -131,7 +131,6 @@
 
 @media print {
   @page {
-    size: 330mm 210mm;
     margin: 0;
   }
   body {

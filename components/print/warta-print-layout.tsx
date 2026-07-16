@@ -76,7 +76,7 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
           {/* KOP SURAT */}
           <div className="flex items-center justify-between border-b-[4px] border-black mb-1.5 pb-1.5 text-center gap-1">
             <div className="flex-shrink-0 w-[54px]">
-              <Image src="/logo-gkps.png" alt="Logo GKPS" width={48} height={48} className="object-contain w-full h-auto" />
+              <Image src="/logo-gkps.png" alt="Logo GKPS" width={48} height={48} className="object-contain w-full h-auto" unoptimized />
             </div>
             <div className="flex-1 px-0.5 leading-[1.15]">
               <p className="font-bold text-[13.5px] uppercase tracking-tight">Warta Jemaat</p>
@@ -86,7 +86,7 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
               <p className="text-[8.5px] uppercase font-normal">Pamatang Simalungun</p>
             </div>
             <div className="flex-shrink-0 w-[54px]">
-              <Image src="/logo-tema-gkps.png" alt="Logo Tema GKPS" width={54} height={54} className="object-contain w-full h-auto" />
+              <Image src="/logo-tema-gkps.png" alt="Logo Tema GKPS" width={54} height={54} className="object-contain w-full h-auto" unoptimized />
             </div>
           </div>
 
