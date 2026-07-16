@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Info } from 'lucide-react'
+import { Info, Printer } from 'lucide-react'
 import WartaPrintLayout from '@/components/print/warta-print-layout'
 import { WartaDraftState } from '@/lib/types/warta-draft'
 import { listPelayanAktif } from '@/app/actions/pelayan'
@@ -89,7 +89,10 @@ export default function Step5Preview({ state, dispatch }: Step5PreviewProps) {
             </div>
             <p className="text-slate-600 font-medium ml-9">Pratinjau A4 sebelum mencetak</p>
           </div>
-          <Button onClick={() => window.print()} size="lg">Cetak</Button>
+          <Button onClick={() => window.print()} className="h-10 px-6 font-bold">
+            <Printer className="w-4 h-4 mr-2" />
+            Cetak Warta
+          </Button>
         </div>
 
         <div className="w-full overflow-x-auto flex justify-center bg-transparent py-6">

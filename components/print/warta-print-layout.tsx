@@ -33,7 +33,7 @@ function BulletKVRow({ label, value }: { label: string; value: string }) {
 // Judul romawi dengan format rata kiri.
 function SectionHeading({ title, dateLine }: { title: string; dateLine?: string }) {
   return (
-    <div className="mb-2 text-left">
+    <div className="mt-1 mb-2 text-left">
       <div className="font-bold uppercase text-[13.5px] tracking-tight leading-tight">{title}</div>
       {dateLine && (
         <div className="font-bold uppercase text-[12px] tracking-tight leading-tight">{dateLine}</div>
@@ -65,7 +65,7 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
   }
 
   return (
-    <div className="w-[297mm] h-[210mm] max-h-[210mm] bg-white text-black p-2 mx-auto box-border flex flex-col font-serif overflow-hidden text-[10.5px] leading-[1.35]">
+    <div className="w-[330mm] h-[210mm] max-h-[210mm] bg-white text-black p-2 mx-auto box-border flex flex-col font-serif overflow-hidden text-[10.5px] leading-[1.35]">
 
       {/* KOTAK HITAM UTAMA */}
       <div className="flex-1 min-h-0 w-full border-[3px] border-black flex flex-row overflow-hidden">
@@ -75,8 +75,8 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
 
           {/* KOP SURAT */}
           <div className="flex items-center justify-between border-b-[4px] border-black mb-1.5 pb-1.5 text-center gap-1">
-            <div className="flex-shrink-0 w-[42px]">
-              <Image src="/logo-gkps.png" alt="Logo GKPS" width={42} height={42} className="object-contain w-full h-auto" />
+            <div className="flex-shrink-0 w-[54px]">
+              <Image src="/logo-gkps.png" alt="Logo GKPS" width={48} height={48} className="object-contain w-full h-auto" />
             </div>
             <div className="flex-1 px-0.5 leading-[1.15]">
               <p className="font-bold text-[13.5px] uppercase tracking-tight">Warta Jemaat</p>
@@ -85,8 +85,8 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
               <p className="text-[8.5px] uppercase mt-0.5 font-normal">Jl. Guru Jason Saragih No.12</p>
               <p className="text-[8.5px] uppercase font-normal">Pamatang Simalungun</p>
             </div>
-            <div className="flex-shrink-0 w-[42px]">
-              <Image src="/logo-tema-gkps.png" alt="Logo Tema GKPS" width={42} height={42} className="object-contain w-full h-auto" />
+            <div className="flex-shrink-0 w-[54px]">
+              <Image src="/logo-tema-gkps.png" alt="Logo Tema GKPS" width={54} height={54} className="object-contain w-full h-auto" />
             </div>
           </div>
 
@@ -327,7 +327,7 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
               {safePengumuman ? (
                 <div
                   className="
-                    text-[11.4px] leading-[1.35] text-justify
+                    text-[11.8px] leading-[1.35] text-justify
                     [&_p]:mb-1 [&_p]:mt-0
                     [&_ol]:list-decimal [&_ol]:pl-4 [&_ol]:mb-1 [&_ol]:space-y-0.5
                     [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:space-y-0.5
