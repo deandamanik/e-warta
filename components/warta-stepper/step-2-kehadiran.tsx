@@ -6,6 +6,8 @@ import { Plus, Trash2, Users } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { WartaDraftState, KehadiranItemDraft } from '@/lib/types/warta-draft'
+import { subDays, format } from 'date-fns'
+import { id } from 'date-fns/locale'
 
 interface Step2KehadiranProps {
   state: WartaDraftState
@@ -21,7 +23,20 @@ const DEFAULT_PRESETS = [
 ]
 
 export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps) {
+  let teksMingguLalu = "Kehadiran Jemaat (Minggu Lalu)"
   
+  if (state.tanggalIbadah) {
+    try {
+      const tglMinggu = new Date(state.tanggalIbadah)
+      if (!isNaN(tglMinggu.getTime())) {
+        const tglMingguLalu = subDays(tglMinggu, 7)
+        teksMingguLalu = `Kehadiran Jemaat — Minggu Lalu (${format(tglMingguLalu, 'd MMMM yyyy', { locale: id })})`
+      }
+    } catch (e) {
+      // fallback
+    }
+  }
+
   // Populasi otomatis saat pertama kali dibuka jika masih kosong
   useEffect(() => {
     if ((state.kehadiranItems || []).length === 0) {
@@ -70,7 +85,7 @@ export default function Step2Kehadiran({ state, dispatch }: Step2KehadiranProps)
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center min-w-[800px]">
           <Users className="w-6 h-6 mr-3 text-slate-700" />
-          <h3 className="text-xl font-bold text-slate-800">Kehadiran Jemaat (Minggu Lalu)</h3>
+          <h3 className="text-xl font-bold text-slate-800">{teksMingguLalu}</h3>
         </div>
         
         <div className="p-6">

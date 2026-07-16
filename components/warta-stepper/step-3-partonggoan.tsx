@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, Trash2, Home, Calendar } from 'lucide-react'
 import { Input } from '@/components/ui/input'
+import { subDays, addDays, format } from 'date-fns'
+import { id } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -107,6 +109,23 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
     dispatch({ type: 'REMOVE_PARTONGGOAN_JADWAL', index })
   }
 
+  let teksMingguBerjalan = "Kehadiran Partonggoan — Minggu Berjalan"
+  let teksMingguDepan = "Jadwal Ianan & Sipartugas — Minggu Depan"
+  
+  if (state.tanggalIbadah) {
+    try {
+      const tglMinggu = new Date(state.tanggalIbadah)
+      if (!isNaN(tglMinggu.getTime())) {
+        const tglRabuBerjalan = subDays(tglMinggu, 4)
+        const tglRabuDepan = addDays(tglMinggu, 3)
+        teksMingguBerjalan += ` (Rabu, ${format(tglRabuBerjalan, 'd MMMM yyyy', { locale: id })})`
+        teksMingguDepan += ` (Rabu, ${format(tglRabuDepan, 'd MMMM yyyy', { locale: id })})`
+      }
+    } catch (e) {
+      // fallback safely
+    }
+  }
+
   return (
     <div className="flex flex-col gap-10 w-full">
       {/* SUB-BLOK 1: KEHADIRAN PARTONGGOAN */}
@@ -115,7 +134,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center min-w-[800px]">
           <Home className="w-6 h-6 mr-3 text-slate-700" />
-          <h3 className="text-xl font-bold text-slate-800">Kehadiran Partonggoan — Minggu Berjalan</h3>
+          <h3 className="text-xl font-bold text-slate-800">{teksMingguBerjalan}</h3>
         </div>
         
         <div className="p-6">
@@ -245,7 +264,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
       >
         <div className="bg-slate-100 border-b-2 border-slate-300 px-6 py-4 flex items-center min-w-[800px]">
           <Calendar className="w-6 h-6 mr-3 text-slate-700" />
-          <h3 className="text-xl font-bold text-slate-800">Jadwal Ianan & Sipartugas — Minggu Depan</h3>
+          <h3 className="text-xl font-bold text-slate-800">{teksMingguDepan}</h3>
         </div>
         
         <div className="p-6">
@@ -316,6 +335,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                           label=""
                           value={item.parAmbilanId}
                           onChange={(val) => handleUpdateJadwal(index, 'parAmbilanId', val)}
+                          roleFilter="par-ambilan"
                         />
                       </div>
                     </td>
@@ -325,6 +345,7 @@ export default function Step3Partonggoan({ state, dispatch }: Step3PartonggoanPr
                           label=""
                           value={item.parAgendaId}
                           onChange={(val) => handleUpdateJadwal(index, 'parAgendaId', val)}
+                          roleFilter="par-ambilan"
                         />
                       </div>
                     </td>
