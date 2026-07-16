@@ -113,25 +113,29 @@ export default function WartaPrintLayout({ data, pelayanLookup = {}, keluargaLoo
               <div className="font-bold uppercase text-[11px] text-center mb-1 tracking-tight">
                 Nomor Doding
               </div>
-              <div className="border border-black p-1 mb-2">
-                <table className="w-full border-none table-fixed">
-                  <colgroup>
-                    <col className="w-[8%]" />
-                    <col className="w-[42%]" />
-                    <col className="w-[5%]" />
-                    <col className="w-[45%]" />
-                  </colgroup>
-                  <tbody>
-                    {(data.dodingItems || []).map((item, idx) => (
-                      <tr key={item.localId}>
-                        <td className="align-top text-right pr-1 font-semibold">{idx + 1}.</td>
-                        <td className="align-top font-semibold">Hal No. {item.nomorLagu || '—'}</td>
-                        <td className="align-top text-center">:</td>
-                        <td className="align-top font-semibold">{item.notasiBait || '—'}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="border border-black p-2 mt-1 mb-2">
+                {(data.dodingItems || []).map((item, idx, arr) => {
+                  const isProsesi = idx === 0
+                  const isGalangan = idx === arr.length - 1
+
+                  let leftContent
+                  if (isProsesi) {
+                    leftContent = <><b>Prosesi:</b> Hal No. {item.nomorLagu || '—'}</>
+                  } else if (isGalangan) {
+                    leftContent = <><b>Galangan:</b> Hal No. {item.nomorLagu || '—'}</>
+                  } else {
+                    leftContent = <span className="pl-4">{idx}. Hal No. {item.nomorLagu || '—'}</span>
+                  }
+
+                  return (
+                    <div key={item.localId} className="flex justify-between items-center mb-[1px]">
+                      <div className="font-medium text-left">{leftContent}</div>
+                      <div className="font-medium text-right pl-2 whitespace-nowrap">
+                        : <b>{item.notasiBait || '—'}</b>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </>
           )}
